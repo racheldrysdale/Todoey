@@ -11,10 +11,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
 	
 	var itemArray = ["Year at a glance", "Future Log", "2019 Goals", "Finances"]
+	
+	let defaults = UserDefaults.standard
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+			itemArray = items
+		}
 	}
 	
 	// MARK: - TableView Datasource Methods
@@ -59,6 +64,8 @@ class TodoListViewController: UITableViewController {
 			// What will happen once the user clicks the Add Item button on our UIAlert
 			// Add item to item array
 			self.itemArray.append(textField.text!)
+			// Save item array into defaults
+			self.defaults.set(self.itemArray, forKey: "TodoListArray")
 			// At this point even though we have added the item to itemArray, we have not refreshed the view and so the item won't show in the table view, so we need to reload the data
 			self.tableView.reloadData()
 		}
