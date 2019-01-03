@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 	
-	let itemArray = ["Year at a glance", "Future Log", "2019 Goals", "Finances"]
+	var itemArray = ["Year at a glance", "Future Log", "2019 Goals", "Finances"]
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -46,6 +46,33 @@ class TodoListViewController: UITableViewController {
 		// Animates table view so that when you tap on item it highlights grey briefly but doesn't stay grey as before
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
+	
+	//MARK: - Add new items
+	
+	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+		
+		var textField = UITextField()
+		
+		let alert = UIAlertController(title: "Add new to-do item", message: "", preferredStyle: .alert)
+		
+		let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+			// What will happen once the user clicks the Add Item button on our UIAlert
+			// Add item to item array
+			self.itemArray.append(textField.text!)
+			// At this point even though we have added the item to itemArray, we have not refreshed the view and so the item won't show in the table view, so we need to reload the data
+			self.tableView.reloadData()
+		}
+		
+		alert.addTextField { (alertTextField) in
+			alertTextField.placeholder = "Create new item"
+			textField = alertTextField
+		}
+		
+		alert.addAction(action)
+		present(alert, animated: true, completion: nil)
+		
+	}
+	
 
 }
 
